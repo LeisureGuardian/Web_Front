@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import GoogleMap from './GoogleMap'
+import ListView from './ListView'
+import Sidebar from './Sidebar'
+
 
 window.EventBus = new Vue({
   data () {
@@ -13,8 +16,9 @@ window.EventBus = new Vue({
 });
 
 Vue.component('GoogleMap', GoogleMap);
+Vue.component('ListView', ListView);
+Vue.component('Sidebar', Sidebar);
 
-Vue.config.productionTip = false
 
 new Vue({
 
