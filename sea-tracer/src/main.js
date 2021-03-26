@@ -1,28 +1,36 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
-import GoogleMap from './GoogleMap'
-import ListView from './ListView'
-import Sidebar from './Sidebar'
 
 
-window.EventBus = new Vue({
-  data () {
-    return {
-      sanfrancisco: [37.78268, - 122.41136]
-    }
+
+import vuetify from './plugins/vuetify';
+import VuetifyDialog from 'vuetify-dialog'
+import * as VueGoogleMaps from 'vue2-google-maps'
+
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBRQUHCl1nNaeUgn-ZiXF4eLBfUH9D9oMs',
+    libraries: 'places', // This is required if you use the Autocomplete plugin
+    // OR: libraries: 'places,drawing'
+    // OR: libraries: 'places,drawing,visualization'
+    // (as you require)
+
+    //// If you want to set the version, you can do so:
+    // v: '3.26',
   }
-});
+})
 
-Vue.component('GoogleMap', GoogleMap);
-Vue.component('ListView', ListView);
-Vue.component('Sidebar', Sidebar);
+Vue.config.productionTip = false
 
+Vue.use(VuetifyDialog, {
+  context: {
+    vuetify
+  }
+})
 
 new Vue({
-
-  router,
-  store,
+  vuetify,
   render: h => h(App)
+
 }).$mount('#app')

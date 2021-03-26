@@ -19,6 +19,8 @@
 
 <script>
 import Vue from 'vue';
+import EventBus from './main.js';
+
 export default {
   props: {
     'latitude': {

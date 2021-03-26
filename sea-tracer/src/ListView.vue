@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import EventBus from './main.js';
 export default {
   created () {
     EventBus.$on('add-marker', (marker) => {
