@@ -1,7 +1,8 @@
 <template>
   <v-container>
-    <User class="item" @addDev="addDev" @rmUser="rmUser" />
+    <User class="item" @addDev="addDev" @rmDev="rmDev" />
     <GmapMap
+      ref="mapRef"
       class="item"
       :center="{ lat: 36.14557919088093,
           lng: 128.39311591970852}"
@@ -21,41 +22,55 @@
 
 <script>
 import User from './User'
+import initCustomMarker from "./custom-marker"
+import { gmapApi as google } from "vue2-google-maps";
+let CustomMarker;
 export default {
 
   data () {
     return {
-      markers: []
+      markers: [],
+      CustomMarker: null,
+
     };
   },
+  computed: {
+    google
+  },
+  watch: {
+    google (val) {
+      CustomMarker = initCustomMarker(val);
+    }
+  },
   created () {
-    console.log(this.markers);
+
   },
   methods: {
-    clickMarker: function () {
-      this.$dialog.confirm({
-        text: "What's your name? <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Natgeologo.svg/1200px-Natgeologo.svg.png' height=100/><input value='input'></input>", title: 'Warning'
+    rmDev (userList) {
+      this.markers.map((marker) => {
+        marker.onRemove();
       });
+      this.markers = [];
+      this.addDev(userList);
     },
     addDev (userList) {
-      userList.forEach(user => {
-        const lat = user.Location.lat;
-        const lng = user.Location.lng;
+      userList.forEach((user, i) => {
+        const el = document.createElement("div");
+        el.setAttribute("data-marker-index", i);
 
-        this.markers.push({
-          position: {
-            lat: lat,
-            lng: lng
-          }
-        })
+        const t = new CustomMarker(
+          new this.google.maps.LatLng(user.Location.lat, user.Location.lng), el
+        );
+
+        this.$refs["mapRef"].$mapPromise.then((map) => {
+          t.setMap(map);
+        });
+
+        this.markers.push(t);
       })
-    },
-    rmUser (index) {
-      console.log(index);
-      console.log(this.markers)
-      this.markers.splice(index, 1);
-      console.log(this.markers)
+
     }
+
   },
   components: {
     User

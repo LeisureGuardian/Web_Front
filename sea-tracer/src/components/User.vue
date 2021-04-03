@@ -3,7 +3,7 @@
     <p id="user">User</p>
 
     <div id="addLoc">
-      <form id="form" @submit.prevent="addNewTodo">
+      <form id="form" @submit.prevent="addNewDev">
         <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
 
         <v-text-field
@@ -28,7 +28,7 @@
           id="rmBtn"
           color="error"
           style="float:right"
-          @click="rmUser(index)"
+          @click="rmDev(index)"
         >
           <v-icon dark>mdi-minus</v-icon>
         </v-btn>
@@ -57,7 +57,7 @@ export default {
 
   },
   methods: {
-    addNewTodo () {
+    addNewDev () {
       this.userList.push({
         devId: this.nextDevId++,
         Location: {
@@ -74,9 +74,10 @@ export default {
     addDev () {
       this.$emit("addDev", this.userList);
     },
-    rmUser (index) {
-      this.$emit("rmUser", Number(index));
+    rmDev (index) {
       this.userList.splice(index, 1);
+      this.$emit("rmDev", this.userList);
+
 
     }
   }
