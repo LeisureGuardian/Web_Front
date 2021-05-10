@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <p>Leisure Guardian</p>
-
-    <p id="time">{{now}}</p>
-  </div>
+  <v-container>
+    <div id="title">Leisure Guardian</div>
+    <div id="time">{{now}}</div>
+    <v-btn v-if="$route.name !== 'Login'" class="error mt-5" @click="logout">LogOut</v-btn>
+  </v-container>
 </template>
 
 <script>
@@ -19,6 +19,10 @@ export default {
     setInterval(() => { this.time() }, 1000);
   },
   methods: {
+    logout () {
+      sessionStorage.setItem("isLogin", false);
+      this.$router.push("/login");
+    },
     time () {
       const today = new Date();
       const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -34,15 +38,15 @@ export default {
 
 </script>
 <style scoped>
-p {
+.container {
   display: flex;
-  height: 100px;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+}
+#title {
   font-size: 50px;
 }
 #time {
-  height: 10px;
   font-size: 30px;
 }
 </style>

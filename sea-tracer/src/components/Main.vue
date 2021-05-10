@@ -49,9 +49,9 @@ export default {
     rmDev (userList) {
       this.markers.map((marker) => {
         marker.onRemove();
-      });
+      });//다 지우고 
       this.markers = [];
-      this.addDev(userList);
+      this.addDev(userList);//새로 초기화
     },
     addDev (userList) {
       userList.forEach((user, i) => {
