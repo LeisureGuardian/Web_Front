@@ -26,12 +26,10 @@ import initCustomMarker from "./custom-marker"
 import { gmapApi as google } from "vue2-google-maps";
 let CustomMarker;
 export default {
-
   data () {
     return {
       markers: [],
       CustomMarker: null,
-
     };
   },
   computed: {

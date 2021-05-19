@@ -22,7 +22,6 @@ export default {
     }
   },
   computed: {
-
     isLogin () {
       return this.$store.getters.getIsLogin;
     },

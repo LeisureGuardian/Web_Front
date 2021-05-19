@@ -18,6 +18,9 @@
           />
         </v-col>
       </v-row>
+      <v-row class="mt-5 center">
+        <router-link to='/signUp'>SignUp</router-link>
+      </v-row>
       <v-row class="mt-5">
         <v-col cols="8" sm="4" md="3" xl="2" class="center">
           <button type="submit" class="LoginButton">LogIn</button>
@@ -26,9 +29,12 @@
     </v-form>
   </div>
 </template>
+
 <script>
 
 import { mapMutations } from "vuex";
+import axios from "axios"
+// import API from "../api"
 export default {
   name: "LoginForm",
   data () {
@@ -41,6 +47,21 @@ export default {
   methods: {
     CheckForm (e) {
       if (this.Password && this.email) {
+        axios.post(`http://mmyu.synology.me:8000/user/login`,
+         {
+        email: this.email,
+        password: this.Password
+      }).then((res)=> {
+        if(res.status == 200) {
+          console.log(res.data);
+          sessionStorage.setItem("isLogin", true);
+          this.$router.push("/"); // 메인페이지로 이동
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      
         // this.axios
         //   .post(`${ipObj.ip}/api/log/in`, {
         //     _id: this.StudentNumber,
@@ -66,11 +87,10 @@ export default {
         //       this.error = "통신에 문제가 생겼습니다. 다시 시도해주세요.";
         //     }
         //   });
-        sessionStorage.setItem("isLogin", true);
-        this.$router.push("/"); // 메인페이지로 이동
+        
       }
 
-      //입력이 아예 업는 경우
+      //입력이 아예 없는 경우
       if (!this.Password || !this.email) {
         this.error = "아이디 및 비밀번호 입력을 확인해주세요";
       }
