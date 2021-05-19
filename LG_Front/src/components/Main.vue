@@ -81,7 +81,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 .item {
   width: 50%;

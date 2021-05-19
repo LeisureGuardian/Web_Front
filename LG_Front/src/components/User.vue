@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="userContainer">
     <p id="user">User</p>
 
     <div id="addLoc">
@@ -85,6 +85,9 @@ export default {
 
 </script>
 <style scoped>
+.userContainer {
+  padding: 10px;
+}
 #user {
   font-size: 50px;
   text-align: center;

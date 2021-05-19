@@ -29,6 +29,8 @@
 <script>
 
 import { mapMutations } from "vuex";
+import ipObj from "../key";
+import axios from "axios";
 export default {
   name: "LoginForm",
   data () {
@@ -41,33 +43,42 @@ export default {
   methods: {
     CheckForm (e) {
       if (this.Password && this.email) {
-        // this.axios
-        //   .post(`${ipObj.ip}/api/log/in`, {
-        //     _id: this.StudentNumber,
-        //     pw: this.Password,
-        //   })
-        //   .then((res) => {
-        //     if (res.status === 200) {
-        //       const admin = res.data.admin;
-        //       const token = res.data.token;
-        //       sessionStorage.setItem("admin", admin);
-        //       sessionStorage.setItem("token", token);
-        //       if (admin) {
-        //         this.setAdmin(true);
-        //       }
-        //       this.setLogin(true); // 로그인 함수
-        //       this.$router.push("/"); // 메인페이지로 이동
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     if (err.response.status === 400) {
-        //       this.error = "아이디 혹은 비밀번호가 일치 하지 않습니다.";
-        //     } else if (err.response.status === 500) {
-        //       this.error = "통신에 문제가 생겼습니다. 다시 시도해주세요.";
-        //     }
-        //   });
-        sessionStorage.setItem("isLogin", true);
-        this.$router.push("/"); // 메인페이지로 이동
+        console.log(this.email, this.Password)
+        axios
+          .post(`${ipObj.ip}/user/login`, {
+            "email": this.email,
+            "password": this.Password,
+          }, {
+            headers: {
+              "accept": "application/json",
+              "Content-Type": "application/json"
+            }
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              //const admin = res.data.admin;
+              const token = res.data.token;
+              if (token) {
+                sessionStorage.setItem("token", token);
+              }
+              console.log(res);
+              // sessionStorage.setItem("admin", admin);
+
+              // if (admin) {
+              //   this.setAdmin(true);
+              // }
+              sessionStorage.setItem("isLogin", true);
+              this.setLogin(true); // 로그인 함수
+              this.$router.push("/"); // 메인페이지로 이동
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+
+        // sessionStorage.setItem("isLogin", true);
+        // this.$router.push("/"); // 메인페이지로 이동
       }
 
       //입력이 아예 업는 경우
