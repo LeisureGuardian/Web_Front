@@ -14,6 +14,11 @@
       </v-row>
       <v-row class="center">
         <v-col cols="10" sm="6" md="5" xl="3">
+          <input placeholder="Organization" type="text" v-model="Organization" name="organization" class="EmailInput" />
+        </v-col>
+      </v-row>
+      <v-row class="center">
+        <v-col cols="10" sm="6" md="5" xl="3">
           <input
             placeholder="PW"
             type="password"
@@ -97,7 +102,8 @@ export default {
             email: null,
             Password: null,
             PasswordConfirm: null,
-            token: null
+            token: null,
+            Organization:null
         }
     },
     methods: {
@@ -112,6 +118,7 @@ export default {
             }
             else {
                 axios.post(`http://mmyu.synology.me:8000/user/signup`, {
+                organization: this.Organization,
                 fullname: this.name,
                 email: this.email,
                 password: this.Password
