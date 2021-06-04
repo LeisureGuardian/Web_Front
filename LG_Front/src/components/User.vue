@@ -3,7 +3,7 @@
     <p id="user">User</p>
 
     <div id="addLoc">
-      <form id="form" @submit.prevent="addNewDev">
+      <!-- <form id="form" @submit.prevent="addNewDev">
         <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
 
         <v-text-field
@@ -16,7 +16,7 @@
         />
 
         <v-btn id="addBtn" class="ml-2" type="submit" color="primary">Add</v-btn>
-      </form>
+      </form>-->
     </div>
 
     <ul>

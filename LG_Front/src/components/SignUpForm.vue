@@ -2,7 +2,7 @@
   <div class="SignUpForm">
     <p class="Error">{{error}}</p>
     <v-form @submit="CheckForm" novalidate="true">
-        <v-row class="center">
+      <v-row class="center">
         <v-col cols="10" sm="6" md="5" xl="3">
           <input placeholder="name" type="text" v-model="name" name="name" class="NameInput" />
         </v-col>
@@ -14,7 +14,13 @@
       </v-row>
       <v-row class="center">
         <v-col cols="10" sm="6" md="5" xl="3">
-          <input placeholder="Organization" type="text" v-model="Organization" name="organization" class="EmailInput" />
+          <input
+            placeholder="Organization"
+            type="text"
+            v-model="Organization"
+            name="organization"
+            class="EmailInput"
+          />
         </v-col>
       </v-row>
       <v-row class="center">
@@ -94,49 +100,50 @@
 
 <script>
 import axios from "axios";
+import ipObj from "../key.js"
 export default {
-    data() {
-        return {
-            error: null,
-            name: null,
-            email: null,
-            Password: null,
-            PasswordConfirm: null,
-            token: null,
-            Organization:null
-        }
-    },
-    methods: {
-        CheckForm(e) {
-            if(this.Password !== this.PasswordConfirm ) {
-                this.error = "Please check your password again.";
-                e.preventDefault();
-            }
-            else if(this.name == null || this.email == null || this.Password == null || this.PasswordConfirm == null) {
-                this.error = "Please input all of the form.";
-                e.preventDefault();
-            }
-            else {
-                axios.post(`http://mmyu.synology.me:8000/user/signup`, {
-                organization: this.Organization,
-                fullname: this.name,
-                email: this.email,
-                password: this.Password
-            }).then((res) => {
-                if(res.status === 200) {
-                    console.log(res);
-                    this.token = res.data.access_token;
-                    /* 회원가입이 성공적으로 끝나면 바로 로그인 되도록 */
-                    sessionStorage.setItem("token", this.token);
-                    sessionStorage.setItem("isLogin", true);
-                }
-                }).catch((err)=>{
-                    if(err.response.status === 422) {
-                        this.error = "이메일 형식을 맞춰주세요.";
-                    }
-                })
-            }
-        }
+  data () {
+    return {
+      error: null,
+      name: null,
+      email: null,
+      Password: null,
+      PasswordConfirm: null,
+      token: null,
+      Organization: null
     }
+  },
+  methods: {
+    CheckForm (e) {
+      if (this.Password !== this.PasswordConfirm) {
+        this.error = "Please check your password again.";
+        e.preventDefault();
+      }
+      else if (this.name == null || this.email == null || this.Password == null || this.PasswordConfirm == null) {
+        this.error = "Please input all of the form.";
+        e.preventDefault();
+      }
+      else {
+        axios.post(`${ipObj.ip}/user/signup`, {
+          organization: this.Organization,
+          fullname: this.name,
+          email: this.email,
+          password: this.Password
+        }).then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            this.token = res.data.access_token;
+            /* 회원가입이 성공적으로 끝나면 바로 로그인 되도록 */
+            sessionStorage.setItem("token", this.token);
+            sessionStorage.setItem("isLogin", true);
+          }
+        }).catch((err) => {
+          if (err.response.status === 422) {
+            this.error = "이메일 형식을 맞춰주세요.";
+          }
+        })
+      }
+    }
+  }
 }
 </script>
