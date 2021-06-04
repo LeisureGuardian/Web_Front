@@ -1,13 +1,15 @@
 <template>
   <v-container>
-    <v-btn class="error mt-5" @click="addDevice">addDevice</v-btn>
     <div id="title">Leisure Guardian</div>
     <div id="time">{{now}}</div>
-    <v-btn
-      v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')"
-      class="error mt-5"
-      @click="logout"
-    >LogOut</v-btn>
+    <div v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')">
+      <v-btn class="primary mt-5 mr-5" @click="addDevice">addDevice</v-btn>
+      <v-btn
+        v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')"
+        class="error mt-5"
+        @click="logout"
+      >LogOut</v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -50,6 +52,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 #title {
   font-size: 50px;
