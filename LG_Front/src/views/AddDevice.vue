@@ -1,5 +1,5 @@
 <template>
-  <v-container id="signUpPage">
+  <v-container>
     <AddDeviceForm></AddDeviceForm>
   </v-container>
 </template>
@@ -7,7 +7,7 @@
 <script>
 import AddDeviceForm from "../components/AddDeviceForm";
 export default {
-  name: "AddDeviceForm",
+
   components: {
     AddDeviceForm,
   },

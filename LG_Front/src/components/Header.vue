@@ -3,7 +3,7 @@
     <v-btn class="error mt-5" @click="addDevice">addDevice</v-btn>
     <div id="title">Leisure Guardian</div>
     <div id="time">{{now}}</div>
-       <v-btn v-if="$route.name == 'login signUp'" class="error mt-5" @click="logout">LogOut</v-btn>
+    <v-btn v-if="$route.name !== 'login'" class="error mt-5" @click="logout">LogOut</v-btn>
   </v-container>
 </template>
 
@@ -34,7 +34,7 @@ export default {
       const dateTime = date + ' ' + time;
       this.now = dateTime;
     },
-    addDevice() {
+    addDevice () {
       this.$router.push("/addDevice");
     }
   }
