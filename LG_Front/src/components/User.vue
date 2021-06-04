@@ -3,7 +3,7 @@
     <p id="user">User</p>
 
     <div id="addLoc">
-      <form id="form" @submit.prevent="addNewDev">
+      <!-- <form id="form" @submit.prevent="addNewDev">
         <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
 
         <v-text-field
@@ -16,7 +16,7 @@
         />
 
         <v-btn id="addBtn" class="ml-2" type="submit" color="primary">Add</v-btn>
-      </form>
+      </form>-->
     </div>
 
     <ul>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import axios from "axios"
+import ipObj from "../key.js"
 export default {
   data () {
     return {
@@ -54,7 +56,19 @@ export default {
     };
   },
   created () {
-
+    axios.get(`${ipObj.ip}/device`,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYXNkYXNkQGFzZC5jb20iLCJleHBpcmVzIjoxNjIyNzg5MDcyLjY5Njc4NzZ9.UJ7mjewEeD1x3-V6mrTNDtCh744GQrU1EfkFL9LILE8"
+        }
+      }).then((res) => {
+        if (res.status == 200) {
+          console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   },
   methods: {
     addNewDev () {
