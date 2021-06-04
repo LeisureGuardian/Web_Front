@@ -21,6 +21,12 @@ const routes = [
     name: 'SignUp',
     component: () => import('../views/SignUp.vue')
   }
+  ,
+  {
+    path: '/addDevice',
+    name: 'AddDevice',
+    component: () => import('../views/AddDevice.vue')
+  }
 ]
 
 const router = new VueRouter({
