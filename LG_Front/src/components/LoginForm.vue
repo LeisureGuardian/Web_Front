@@ -18,6 +18,9 @@
           />
         </v-col>
       </v-row>
+      <v-row class="mt-5 center">
+        <router-link to='/signUp'>SignUp</router-link>
+      </v-row>
       <v-row class="mt-5">
         <v-col cols="8" sm="4" md="3" xl="2" class="center">
           <button type="submit" class="LoginButton">LogIn</button>
@@ -26,11 +29,13 @@
     </v-form>
   </div>
 </template>
+
 <script>
 
 import { mapMutations } from "vuex";
-import ipObj from "../key";
-import axios from "axios";
+import axios from "axios"
+// import Key from "../key.js"
+// import API from "../api"
 export default {
   name: "LoginForm",
   data () {
@@ -38,50 +43,34 @@ export default {
       error: null,
       email: null,
       Password: null,
+      token: null
     };
   },
   methods: {
     CheckForm (e) {
       if (this.Password && this.email) {
-        console.log(this.email, this.Password)
-        axios
-          .post(`${ipObj.ip}/user/login`, {
-            "email": this.email,
-            "password": this.Password,
-          }, {
-            headers: {
-              "accept": "application/json",
-              "Content-Type": "application/json"
-            }
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              //const admin = res.data.admin;
-              const token = res.data.token;
-              if (token) {
-                sessionStorage.setItem("token", token);
-              }
-              console.log(res);
-              // sessionStorage.setItem("admin", admin);
-
-              // if (admin) {
-              //   this.setAdmin(true);
-              // }
-              sessionStorage.setItem("isLogin", true);
-              this.setLogin(true); // 로그인 함수
-              this.$router.push("/"); // 메인페이지로 이동
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-
-        // sessionStorage.setItem("isLogin", true);
-        // this.$router.push("/"); // 메인페이지로 이동
-      }
-
-      //입력이 아예 업는 경우
+        axios.post(`http://mmyu.synology.me:8000/user/login`,
+         {
+        email: this.email,
+        password: this.Password
+      }).then((res)=> {
+        if(res.status == 200) {
+          console.log(res.data);
+          this.token = res.data.access_token;
+          sessionStorage.setItem("token", this.token);
+          sessionStorage.setItem("isLogin", true);
+          this.$router.push("/"); // 메인페이지로 이동
+        }
+      })
+      .catch((err) => {
+        if(err.response.status === 422) {
+          this.error = err.response.data.detail[0].msg;
+        }
+        console.log(err)
+      })
+        
+    }
+      //입력이 아예 없는 경우
       if (!this.Password || !this.email) {
         this.error = "아이디 및 비밀번호 입력을 확인해주세요";
       }

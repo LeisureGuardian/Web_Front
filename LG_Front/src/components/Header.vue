@@ -2,7 +2,7 @@
   <v-container>
     <div id="title">Leisure Guardian</div>
     <div id="time">{{now}}</div>
-    <v-btn v-if="$route.name !== 'Login'" class="error mt-5" @click="logout">LogOut</v-btn>
+       <v-btn v-if="$route.name == 'login signUp'" class="error mt-5" @click="logout">LogOut</v-btn>
   </v-container>
 </template>
 
