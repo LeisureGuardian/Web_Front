@@ -59,7 +59,7 @@ export default {
     axios.get(`${ipObj.ip}/device`,
       {
         headers: {
-          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYXNkYXNkQGFzZC5jb20iLCJleHBpcmVzIjoxNjIyNzg5MDcyLjY5Njc4NzZ9.UJ7mjewEeD1x3-V6mrTNDtCh744GQrU1EfkFL9LILE8"
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         }
       }).then((res) => {
         if (res.status == 200) {

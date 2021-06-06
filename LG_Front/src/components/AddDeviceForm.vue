@@ -72,12 +72,12 @@ export default {
           organization: this.Organization
         }, {
           headers: {
-            'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYXNkYXNkQGFzZC5jb20iLCJleHBpcmVzIjoxNjIyNzk2Nzk2LjAzNTgwNjJ9._aTg38fpYNOTEF3KFGGYPGivRyiv1xwAukX_NYZwEP8",
-            'Content-Type': 'application/json',
-            'accept': 'application/json'
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+
           }
         }).then((res) => {
           console.log(res);
+          this.$router.push("/");
 
         }).catch((err) => {
           console.log(err)

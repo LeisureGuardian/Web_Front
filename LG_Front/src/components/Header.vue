@@ -28,6 +28,7 @@ export default {
   methods: {
     logout () {
       sessionStorage.setItem("isLogin", false);
+      sessionStorage.setItem("token", "");
       this.$router.push("/login");
     },
     time () {
