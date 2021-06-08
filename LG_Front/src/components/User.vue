@@ -1,7 +1,7 @@
 <template>
   <div class="userContainer">
-    <p id="user">User</p>
-
+    <!-- <p id="user">User</p> -->
+      
     <div id="addLoc">
       <!-- <form id="form" @submit.prevent="addNewDev">
         <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
@@ -17,28 +17,54 @@
 
         <v-btn id="addBtn" class="ml-2" type="submit" color="primary">Add</v-btn>
       </form>-->
+      <!-- <template>
+      <v-data-table
+        :headers="information"
+        :items="userList"
+        :items-per-page="5"
+        class="elevation-1"
+      ></v-data-table>
+    </template> -->
+    <template>
+      <v-card>
+        <v-card-title>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="information"
+          :items="userList"
+          :search="search"
+        ></v-data-table>
+      </v-card>
+    </template>
     </div>
 
-    <ul>
-      <li v-for="(user, index) in userList" :key="user.devId">
-        <v-btn
-          fab
-          small
-          class="mt-3"
-          id="rmBtn"
-          color="error"
-          style="float:right"
-          @click="rmDev(index)"
-        >
-          <v-icon dark>mdi-minus</v-icon>
-        </v-btn>
-        <b>devID:</b>
-        {{ user.devId }}
-        <br />
-        <b>Location:</b>
-        lat {{user.Location.lat}}/lng {{user.Location.lng}}
-      </li>
-    </ul>
+      <!-- <ul>
+        <li v-for="(user, index) in userList" :key="user.devId">
+          <v-btn
+            fab
+            small
+            class="mt-3"
+            id="rmBtn"
+            color="error"
+            style="float:right"
+            @click="rmDev(index)"
+          >
+            <v-icon dark>mdi-minus</v-icon>
+          </v-btn>
+          <b>devID:</b>
+          {{ user.devId }}
+          <br />
+          <b>Location:</b>
+          lat {{user.Location.lat}}/lng {{user.Location.lng}}
+        </li>
+      </ul> -->
   </div>
 </template>
 
@@ -48,15 +74,75 @@ import ipObj from "../key.js"
 export default {
   data () {
     return {
+      information: [
+        {
+          text:"addedDate", align:"center", value: "addedDate"
+        },
+        {
+          text:"deviceName", align:"center", value: "deviceName"
+        },
+        {
+          text:"deviceSerial", align:"center", value: "deviceSerial"
+        },
+        {
+          text:"organization", align:"center", value: "organization"
+        }
+      ],
       userList: [],
       nextDevId: 1,
       lat: null,
-      lng: null
-
+      lng: null,
+      search: "",
+      addedDate: null,
+      deviceName: null,
+      deviceSerial: null,
+      organization: null,
+      indexCount: null,
     };
   },
   created () {
-    axios.get(`${ipObj.ip}/device`,
+    this.getDevice()
+    // this.getDeviceData()
+  },
+  methods: {
+    getDevice() {
+      axios.get(`${ipObj.ip}/device`,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        }
+      }).then((res) => {
+        if (res.status == 200) {
+          console.log(res.data);
+          this.indexCount = res.data.data.length;
+          for(let i = 0; i<this.indexCount; i++) {
+            // this.addedDate = res.data.data[i].addedDate;
+            // this.deviceName = res.data.data[i].deviceName;
+            // this.deviceSerial = res.data.data[i].deviceSerial;
+            // this.organization = res.data.data[i].organization;
+            // this.pushUserDataInList()
+          }
+          this.userList = res.data.data;
+          console.log(this.userList);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("불러오기 중 오류");
+      })
+      this.getDeviceData()
+    },
+    
+    // pushUserDataInList() {
+    //    this.userList.push({
+    //       addedDate: this.addedDate,
+    //       deviceName: this.deviceName,
+    //       deviceSerial: this.deviceSerial,
+    //       organization : this.organization
+    //     })
+    // },
+    getDeviceData() {
+      axios.get(`${ipObj.ip}/deviceData`,
       {
         headers: {
           'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -69,8 +155,7 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-  },
-  methods: {
+    },
     addNewDev () {
       this.userList.push({
         devId: this.nextDevId++,
@@ -91,8 +176,6 @@ export default {
     rmDev (index) {
       this.userList.splice(index, 1);
       this.$emit("rmDev", this.userList);
-
-
     }
   }
 };

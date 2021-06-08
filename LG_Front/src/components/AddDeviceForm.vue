@@ -47,6 +47,7 @@
 
 <script>
 import axios from "axios";
+import ipObj from "../key.js"
 export default {
   data () {
     return {
@@ -66,7 +67,7 @@ export default {
         console.log(this.SerialNumber)
         console.log(this.DeviceName)
         console.log(this.Organization)
-        axios.post(`http://mmyu.synology.me:8000/device`, {
+        axios.post(`${ipObj.ip}/device`, {
           deviceSerial: this.SerialNumber,
           deviceName: this.DeviceName,
           organization: this.Organization
