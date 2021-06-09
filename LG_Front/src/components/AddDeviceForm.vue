@@ -24,17 +24,7 @@
           />
         </v-col>
       </v-row>
-      <v-row class="mt-5 center">
-        <v-col cols="10" sm="6" md="5" xl="3">
-          <input
-            placeholder="Organization"
-            type="text"
-            class="organizationInput"
-            v-model="Organization"
-            name="organization"
-          />
-        </v-col>
-      </v-row>
+
       <v-row class="mt-5">
         <v-col cols="8" sm="4" md="3" xl="2" class="center">
           <v-btn color="primary" type="submit">Input</v-btn>
@@ -59,18 +49,17 @@ export default {
   },
   methods: {
     inputDevice (e) {
-      if (this.SerialNumber == null || this.DeviceName == null || this.Organization == null) {
+      if (this.SerialNumber == null || this.DeviceName == null) {
         this.error = "Please input all of the form.";
         e.preventDefault();
       }
       else {
         console.log(this.SerialNumber)
         console.log(this.DeviceName)
-        console.log(this.Organization)
+
         axios.post(`${ipObj.ip}/device`, {
           deviceSerial: this.SerialNumber,
           deviceName: this.DeviceName,
-          organization: this.Organization
         }, {
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),

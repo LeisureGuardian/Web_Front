@@ -1,7 +1,7 @@
 <template>
   <div class="userContainer">
     <!-- <p id="user">User</p> -->
-      
+
     <div id="addLoc">
       <!-- <form id="form" @submit.prevent="addNewDev">
         <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
@@ -24,28 +24,24 @@
         :items-per-page="5"
         class="elevation-1"
       ></v-data-table>
-    </template> -->
-    <template>
-      <v-card>
-        <v-card-title>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="information"
-          :items="userList"
-          :search="search"
-        ></v-data-table>
-      </v-card>
-    </template>
+      </template>-->
+      <template>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table :headers="information" :items="userList" :search="search"></v-data-table>
+        </v-card>
+      </template>
     </div>
 
-      <!-- <ul>
+    <!-- <ul>
         <li v-for="(user, index) in userList" :key="user.devId">
           <v-btn
             fab
@@ -64,7 +60,7 @@
           <b>Location:</b>
           lat {{user.Location.lat}}/lng {{user.Location.lng}}
         </li>
-      </ul> -->
+    </ul>-->
   </div>
 </template>
 
@@ -76,16 +72,16 @@ export default {
     return {
       information: [
         {
-          text:"addedDate", align:"center", value: "addedDate"
+          text: "addedDate", align: "center", value: "addedDate"
         },
         {
-          text:"deviceName", align:"center", value: "deviceName"
+          text: "deviceName", align: "center", value: "deviceName"
         },
         {
-          text:"deviceSerial", align:"center", value: "deviceSerial"
+          text: "deviceSerial", align: "center", value: "deviceSerial"
         },
         {
-          text:"organization", align:"center", value: "organization"
+          text: "organization", align: "center", value: "organization"
         }
       ],
       userList: [],
@@ -101,38 +97,65 @@ export default {
     };
   },
   created () {
-    this.getDevice()
+    this.getDevice();
+
+
+    // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
+
+
     // this.getDeviceData()
   },
   methods: {
-    getDevice() {
-      axios.get(`${ipObj.ip}/device`,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          console.log(res.data);
-          this.indexCount = res.data.data.length;
-          for(let i = 0; i<this.indexCount; i++) {
-            // this.addedDate = res.data.data[i].addedDate;
-            // this.deviceName = res.data.data[i].deviceName;
-            // this.deviceSerial = res.data.data[i].deviceSerial;
-            // this.organization = res.data.data[i].organization;
-            // this.pushUserDataInList()
+
+    async send () { // async await 으로 비동기 처리
+      for (var i = 0; i < 10; i++) {
+        var res = await this.getDevPosTest(i);
+        console.log(res);
+      }
+
+    },
+    getDevPosTest (pos) {
+      return new Promise(function (resolve, reject) {
+        axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
+          if (res.status == 200) {
+            resolve(res.data.position);
           }
-          this.userList = res.data.data;
-          console.log(this.userList);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        alert("불러오기 중 오류");
-      })
+        })
+          .catch((err) => {
+            reject(err);
+          })
+      });
+
+    },
+
+    getDevice () {
+      axios.get(`${ipObj.ip}/device`,
+        {
+          headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+          }
+        }).then((res) => {
+          if (res.status == 200) {
+            console.log(res.data);
+            this.indexCount = res.data.data.length;
+            for (let i = 0; i < this.indexCount; i++) {
+              // this.addedDate = res.data.data[i].addedDate;
+              // this.deviceName = res.data.data[i].deviceName;
+              // this.deviceSerial = res.data.data[i].deviceSerial;
+              // this.organization = res.data.data[i].organization;
+              // this.pushUserDataInList()
+            }
+            this.userList = res.data.data;
+            console.log(this.userList);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          alert("불러오기 중 오류");
+        })
       this.getDeviceData()
     },
-    
+
     // pushUserDataInList() {
     //    this.userList.push({
     //       addedDate: this.addedDate,
@@ -141,20 +164,20 @@ export default {
     //       organization : this.organization
     //     })
     // },
-    getDeviceData() {
+    getDeviceData () {
       axios.get(`${ipObj.ip}/deviceData`,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          console.log(res.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+        {
+          headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+          }
+        }).then((res) => {
+          if (res.status == 200) {
+            console.log(res.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     addNewDev () {
       this.userList.push({
