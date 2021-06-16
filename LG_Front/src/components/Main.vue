@@ -7,7 +7,7 @@
       class="item"
       :center="{ lat: 36.14557919088093,
           lng: 128.39311591970852}"
-      :zoom="8"
+      :zoom="5"
       style="width: 50%; height: 700px;  "
     >
       <GmapMarker
@@ -15,7 +15,7 @@
         v-for="(m, index) in markers"
         :position="m.position"
         :clickable="true"
-        :draggable="true"
+        :icon="'undefined'"
       />
     </GmapMap>
   </v-container>
@@ -81,6 +81,7 @@ export default {
 };
 
 </script>
+
 <style scoped>
 .container {
   display: flex;
