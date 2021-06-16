@@ -1,5 +1,7 @@
 <template>
   <div class="userContainer">
+    <p id="user">User</p>
+    <v-btn class="primary mb-1" @click="markDev">reflash</v-btn>
     <div id="addLoc">
       <template>
         <v-card>
@@ -12,7 +14,7 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <v-data-table :headers="information" :items="userList" :search="search"></v-data-table>
+          <v-data-table :headers="information" :items="devs" :search="search"></v-data-table>
         </v-card>
       </template>
     </div>
@@ -44,12 +46,40 @@ export default {
         },
         {
           text:"button", align:"center", value:"button"
-        }
+        },
+      ],
+      devs: [
+        //Dummy devs
+        {
+          devName: 1,
+          lat: "35",
+          lng: "125"
+        },
+        {
+          devName: 2,
+          lat: "32",
+          lng: "124"
+        },
+        {
+          devName: 3,
+          lat: "34",
+          lng: "123"
+        },
+        {
+          devName: 4,
+          lat: "36",
+          lng: "125"
+        },
+        {
+          devName: 5,
+          lat: "35",
+          lng: "126"
+        },
       ],
       userList: [],
       nextDevId: 1,
-      lat: null,
-      lng: null,
+      lat: 35,
+      lng: 123,
       search: "",
       check:1,
       // addedDate: null,
@@ -69,9 +99,8 @@ export default {
     // this.getDevice();
 
 
+
     // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-
-
     // this.getDeviceData()
   },
   methods: {
@@ -80,8 +109,9 @@ export default {
         var res = await this.getDevPosTest(i);
         console.log(res);
       }
-
     },
+
+    // Test Code 
     getDevPosTest (pos) {
       return new Promise(function (resolve, reject) {
         axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
@@ -95,7 +125,6 @@ export default {
       });
 
     },
-
     getDevice () {
       axios.get(`${ipObj.ip}/device`,
       {
@@ -113,7 +142,6 @@ export default {
         alert("데이터 불러오기 중 오류");
       })
     },
-
     // pushUserDataInList() {
     //    this.userList.push({
     //       addedDate: this.addedDate,
@@ -122,41 +150,43 @@ export default {
     //       organization : this.organization
     //     })
     // },
+
     getDeviceData () {
       axios.get(`${ipObj.ip}/deviceData`,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          this.userList = res.data.data;
-          console.log("확인 : " + res.data.data);
-          console.log("통신완료" + this.check);
-          this.check++;
-          // console.log("this.userList : " + res.data.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      // {
+      //   headers: {
+      //     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+      //   }
+      // }).then((res) => {
+      //   if (res.status == 200) {
+      //     this.userList = res.data.data;
+      //     console.log("확인 : " + res.data.data);
+      //     console.log("통신완료" + this.check);
+      //     this.check++;
+      //     // console.log("this.userList : " + res.data.data);
+      //   }
+      // })
+      // .catch((err) => {
+      //   console.log(err)
+      // })
+        {
+          headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+          }
+        }).then((res) => {
+          if (res.status == 200) {
+            console.log(res.data);
+            // this.devs = res.data;
+            // this.markDev();
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    addNewDev () {
-      this.userList.push({
-        devId: this.nextDevId++,
-        Location: {
-          lat: Number(this.lat),
-          lng: Number(this.lng)
-        }
-      })
-      this.addDev();
-      this.lat = null //입력값 초기화
-      this.lng = null //입력값 초기화
 
-
-    },
-    addDev () {
-      this.$emit("addDev", this.userList);
+    markDev () {
+      this.$emit("addDev", this.devs);
     },
     rmDev (index) {
       this.userList.splice(index, 1);
