@@ -26,12 +26,10 @@ import initCustomMarker from "./custom-marker"
 import { gmapApi as google } from "vue2-google-maps";
 let CustomMarker;
 export default {
-
   data () {
     return {
       markers: [],
       CustomMarker: null,
-
     };
   },
   computed: {
@@ -43,7 +41,6 @@ export default {
     }
   },
   created () {
-
   },
   methods: {
     rmDev (userList) {
@@ -57,26 +54,20 @@ export default {
       userList.forEach((user, i) => {
         const el = document.createElement("div");
         el.setAttribute("data-marker-index", i);
-
         const t = new CustomMarker(
           new this.google.maps.LatLng(user.Location.lat, user.Location.lng), el
         );
-
         this.$refs["mapRef"].$mapPromise.then((map) => {
           t.setMap(map);
         });
-
         this.markers.push(t);
       })
-
     }
-
   },
   components: {
     User
   },
 };
-
 </script>
 <style scoped>
 .container {

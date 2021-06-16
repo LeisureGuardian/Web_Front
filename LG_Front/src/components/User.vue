@@ -1,70 +1,21 @@
 <template>
   <div class="userContainer">
-    <!-- <p id="user">User</p> -->
-      
     <div id="addLoc">
-      <!-- <form id="form" @submit.prevent="addNewDev">
-        <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
-
-        <v-text-field
-          class="ml-2"
-          label="lng"
-          filled
-          rounded
-          v-model="lng"
-          placeholder="Longitude"
-        />
-
-        <v-btn id="addBtn" class="ml-2" type="submit" color="primary">Add</v-btn>
-      </form>-->
-      <!-- <template>
-      <v-data-table
-        :headers="information"
-        :items="userList"
-        :items-per-page="5"
-        class="elevation-1"
-      ></v-data-table>
-    </template> -->
-    <template>
-      <v-card>
-        <v-card-title>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="information"
-          :items="userList"
-          :search="search"
-        ></v-data-table>
-      </v-card>
-    </template>
+      <template>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table :headers="information" :items="userList" :search="search"></v-data-table>
+        </v-card>
+      </template>
     </div>
-
-      <!-- <ul>
-        <li v-for="(user, index) in userList" :key="user.devId">
-          <v-btn
-            fab
-            small
-            class="mt-3"
-            id="rmBtn"
-            color="error"
-            style="float:right"
-            @click="rmDev(index)"
-          >
-            <v-icon dark>mdi-minus</v-icon>
-          </v-btn>
-          <b>devID:</b>
-          {{ user.devId }}
-          <br />
-          <b>Location:</b>
-          lat {{user.Location.lat}}/lng {{user.Location.lng}}
-        </li>
-      </ul> -->
   </div>
 </template>
 
@@ -109,11 +60,43 @@ export default {
     };
   },
   created () {
+
     // this.getDevice()
     this.getDeviceData()
+
+
+
+    // this.getDevice();
+
+
+    // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
+
+
+    // this.getDeviceData()
   },
   methods: {
-    getDevice() {
+    async send () { // async await 으로 비동기 처리
+      for (var i = 0; i < 10; i++) {
+        var res = await this.getDevPosTest(i);
+        console.log(res);
+      }
+
+    },
+    getDevPosTest (pos) {
+      return new Promise(function (resolve, reject) {
+        axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
+          if (res.status == 200) {
+            resolve(res.data.position);
+          }
+        })
+          .catch((err) => {
+            reject(err);
+          })
+      });
+
+    },
+
+    getDevice () {
       axios.get(`${ipObj.ip}/device`,
       {
         headers: {
@@ -130,7 +113,7 @@ export default {
         alert("데이터 불러오기 중 오류");
       })
     },
-    
+
     // pushUserDataInList() {
     //    this.userList.push({
     //       addedDate: this.addedDate,
@@ -139,7 +122,7 @@ export default {
     //       organization : this.organization
     //     })
     // },
-    getDeviceData() {
+    getDeviceData () {
       axios.get(`${ipObj.ip}/deviceData`,
       {
         headers: {
