@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <User class="item" @addDev="addDev" @rmDev="rmDev" />
+
     <GmapMap
       ref="mapRef"
       class="item"
@@ -53,13 +54,14 @@ export default {
       this.markers = [];
       this.addDev(userList);//새로 초기화
     },
-    addDev (userList) {
-      userList.forEach((user, i) => {
+    addDev (devs) {
+      devs.forEach((dev, i) => {
+        console.log(dev.devName);
         const el = document.createElement("div");
         el.setAttribute("data-marker-index", i);
 
         const t = new CustomMarker(
-          new this.google.maps.LatLng(user.Location.lat, user.Location.lng), el
+          new this.google.maps.LatLng(dev.lat, dev.lng), el
         );
 
         this.$refs["mapRef"].$mapPromise.then((map) => {

@@ -1,30 +1,8 @@
 <template>
   <div class="userContainer">
-    <!-- <p id="user">User</p> -->
-
+    <p id="user">User</p>
+    <v-btn class="primary mb-1" @click="markDev">reflash</v-btn>
     <div id="addLoc">
-      <!-- <form id="form" @submit.prevent="addNewDev">
-        <v-text-field class="ml-2" label="lat" filled rounded v-model="lat" placeholder="Latitude" />
-
-        <v-text-field
-          class="ml-2"
-          label="lng"
-          filled
-          rounded
-          v-model="lng"
-          placeholder="Longitude"
-        />
-
-        <v-btn id="addBtn" class="ml-2" type="submit" color="primary">Add</v-btn>
-      </form>-->
-      <!-- <template>
-      <v-data-table
-        :headers="information"
-        :items="userList"
-        :items-per-page="5"
-        class="elevation-1"
-      ></v-data-table>
-      </template>-->
       <template>
         <v-card>
           <v-card-title>
@@ -36,31 +14,10 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <v-data-table :headers="information" :items="userList" :search="search"></v-data-table>
+          <v-data-table :headers="information" :items="devs" :search="search"></v-data-table>
         </v-card>
       </template>
     </div>
-
-    <!-- <ul>
-        <li v-for="(user, index) in userList" :key="user.devId">
-          <v-btn
-            fab
-            small
-            class="mt-3"
-            id="rmBtn"
-            color="error"
-            style="float:right"
-            @click="rmDev(index)"
-          >
-            <v-icon dark>mdi-minus</v-icon>
-          </v-btn>
-          <b>devID:</b>
-          {{ user.devId }}
-          <br />
-          <b>Location:</b>
-          lat {{user.Location.lat}}/lng {{user.Location.lng}}
-        </li>
-    </ul>-->
   </div>
 </template>
 
@@ -72,22 +29,48 @@ export default {
     return {
       information: [
         {
-          text: "addedDate", align: "center", value: "addedDate"
+          text: "deviceName", align: "center", value: "devName"
         },
         {
-          text: "deviceName", align: "center", value: "deviceName"
+          text: "lat", align: "center", value: "lat"
         },
         {
-          text: "deviceSerial", align: "center", value: "deviceSerial"
-        },
-        {
-          text: "organization", align: "center", value: "organization"
+          text: "lng", align: "center", value: "lng"
         }
+
+      ],
+      devs: [
+        //Dummy devs
+        {
+          devName: 1,
+          lat: "35",
+          lng: "125"
+        },
+        {
+          devName: 2,
+          lat: "32",
+          lng: "124"
+        },
+        {
+          devName: 3,
+          lat: "34",
+          lng: "123"
+        },
+        {
+          devName: 4,
+          lat: "36",
+          lng: "125"
+        },
+        {
+          devName: 5,
+          lat: "35",
+          lng: "126"
+        },
       ],
       userList: [],
       nextDevId: 1,
-      lat: null,
-      lng: null,
+      lat: 35,
+      lng: 123,
       search: "",
       addedDate: null,
       deviceName: null,
@@ -97,23 +80,18 @@ export default {
     };
   },
   created () {
-    this.getDevice();
-
-
     // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-
-
     // this.getDeviceData()
   },
   methods: {
-
     async send () { // async await 으로 비동기 처리
       for (var i = 0; i < 10; i++) {
         var res = await this.getDevPosTest(i);
         console.log(res);
       }
-
     },
+
+    // Test Code 
     getDevPosTest (pos) {
       return new Promise(function (resolve, reject) {
         axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
@@ -127,35 +105,6 @@ export default {
       });
 
     },
-
-    getDevice () {
-      axios.get(`${ipObj.ip}/device`,
-        {
-          headers: {
-            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-          }
-        }).then((res) => {
-          if (res.status == 200) {
-            console.log(res.data);
-            this.indexCount = res.data.data.length;
-            for (let i = 0; i < this.indexCount; i++) {
-              // this.addedDate = res.data.data[i].addedDate;
-              // this.deviceName = res.data.data[i].deviceName;
-              // this.deviceSerial = res.data.data[i].deviceSerial;
-              // this.organization = res.data.data[i].organization;
-              // this.pushUserDataInList()
-            }
-            this.userList = res.data.data;
-            console.log(this.userList);
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-          alert("불러오기 중 오류");
-        })
-      this.getDeviceData()
-    },
-
     // pushUserDataInList() {
     //    this.userList.push({
     //       addedDate: this.addedDate,
@@ -164,6 +113,7 @@ export default {
     //       organization : this.organization
     //     })
     // },
+
     getDeviceData () {
       axios.get(`${ipObj.ip}/deviceData`,
         {
@@ -173,28 +123,17 @@ export default {
         }).then((res) => {
           if (res.status == 200) {
             console.log(res.data);
+            // this.devs = res.data;
+            // this.markDev();
           }
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    addNewDev () {
-      this.userList.push({
-        devId: this.nextDevId++,
-        Location: {
-          lat: Number(this.lat),
-          lng: Number(this.lng)
-        }
-      })
-      this.addDev();
-      this.lat = null //입력값 초기화
-      this.lng = null //입력값 초기화
 
-
-    },
-    addDev () {
-      this.$emit("addDev", this.userList);
+    markDev () {
+      this.$emit("addDev", this.devs);
     },
     rmDev (index) {
       this.userList.splice(index, 1);
