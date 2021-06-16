@@ -141,6 +141,9 @@ export default {
           if (err.response.status === 422) {
             this.error = "이메일 형식을 맞춰주세요.";
           }
+          else if(err.response.status == 400) {
+            alert("이미 존재하는 계정입니다.")
+          }
         })
       }
     }

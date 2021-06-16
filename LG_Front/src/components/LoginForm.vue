@@ -70,6 +70,9 @@ export default {
             if (err.response.status === 422) {
               this.error = err.response.data.detail[0].msg;
             }
+            else if(err.response.status === 400) {
+              alert("비밀번호가 다릅니다.");
+            }
             console.log(err)
           })
 

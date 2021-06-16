@@ -76,16 +76,23 @@ export default {
     return {
       information: [
         {
-          text:"addedDate", align:"center", value: "addedDate"
-        },
-        {
           text:"deviceName", align:"center", value: "deviceName"
         },
         {
-          text:"deviceSerial", align:"center", value: "deviceSerial"
+          text:"temp", align:"center", value: "temp"
         },
         {
-          text:"organization", align:"center", value: "organization"
+          text:"heartRate", align:"center", value: "heartRate"
+        },
+        {
+          text:"batteryLevel", align:"center", value: "batteryLevel"
+        },
+
+        {
+          text:"critical", align:"center", value: "critical"
+        },
+        {
+          text:"button", align:"center", value:"button"
         }
       ],
       userList: [],
@@ -93,16 +100,17 @@ export default {
       lat: null,
       lng: null,
       search: "",
-      addedDate: null,
-      deviceName: null,
-      deviceSerial: null,
-      organization: null,
-      indexCount: null,
+      check:1,
+      // addedDate: null,
+      // deviceName: null,
+      // deviceSerial: null,
+      // organization: null,
+      // indexCount: null,
     };
   },
   created () {
-    this.getDevice()
-    // this.getDeviceData()
+    // this.getDevice()
+    this.getDeviceData()
   },
   methods: {
     getDevice() {
@@ -114,23 +122,13 @@ export default {
       }).then((res) => {
         if (res.status == 200) {
           console.log(res.data);
-          this.indexCount = res.data.data.length;
-          for(let i = 0; i<this.indexCount; i++) {
-            // this.addedDate = res.data.data[i].addedDate;
-            // this.deviceName = res.data.data[i].deviceName;
-            // this.deviceSerial = res.data.data[i].deviceSerial;
-            // this.organization = res.data.data[i].organization;
-            // this.pushUserDataInList()
-          }
-          this.userList = res.data.data;
-          console.log(this.userList);
+          // this.userList = res.data.data;
         }
       })
       .catch((err) => {
         console.log(err)
-        alert("불러오기 중 오류");
+        alert("데이터 불러오기 중 오류");
       })
-      this.getDeviceData()
     },
     
     // pushUserDataInList() {
@@ -149,7 +147,11 @@ export default {
         }
       }).then((res) => {
         if (res.status == 200) {
-          console.log(res.data);
+          this.userList = res.data.data;
+          console.log("확인 : " + res.data.data);
+          console.log("통신완료" + this.check);
+          this.check++;
+          // console.log("this.userList : " + res.data.data);
         }
       })
       .catch((err) => {
