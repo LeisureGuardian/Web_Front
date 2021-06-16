@@ -40,7 +40,6 @@ export default {
         {
           text:"batteryLevel", align:"center", value: "batteryLevel"
         },
-
         {
           text:"critical", align:"center", value: "critical"
         },
