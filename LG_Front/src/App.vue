@@ -16,11 +16,11 @@ export default {
 
   created () {
     this.$router.push({ name: 'Home' })
-    // if (sessionStorage.getItem("isLogin") === "true") {
-    //   this.$router.push({ name: 'Home' })
-    // } else {
-    //   this.$router.push({ name: 'Login' })
-    // }
+    if (sessionStorage.getItem("isLogin") === "true") {
+      this.$router.push({ name: 'Home' })
+    } else {
+      this.$router.push({ name: 'Login' })
+    }
   },
   computed: {
     isLogin () {
