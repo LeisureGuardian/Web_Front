@@ -25,10 +25,8 @@
         </v-col>
       </v-row>
 
-      <v-row class="mt-5">
-        <v-col cols="8" sm="4" md="3" xl="2" class="center">
-          <v-btn color="primary" type="submit">Input</v-btn>
-        </v-col>
+      <v-row class="mt-5 center">
+        <v-btn color="primary" type="submit">Input</v-btn>
       </v-row>
     </v-form>
   </div>
@@ -70,7 +68,7 @@ export default {
           this.$router.push("/");
 
         }).catch((err) => {
-          console.log(err)
+          console.log(err.response)
 
         })
         e.preventDefault();

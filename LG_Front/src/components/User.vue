@@ -77,11 +77,14 @@ export default {
       deviceSerial: null,
       organization: null,
       indexCount: null,
+      count: 1
     };
   },
   created () {
     // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-    // this.getDeviceData()
+
+    // let timerId = setInterval(() => this.getDeviceData(), 2000);
+    // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000);
   },
   methods: {
     async send () { // async await 으로 비동기 처리
@@ -92,37 +95,31 @@ export default {
     },
 
     // Test Code 
-    getDevPosTest (pos) {
-      return new Promise(function (resolve, reject) {
-        axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
-          if (res.status == 200) {
-            resolve(res.data.position);
-          }
-        })
-          .catch((err) => {
-            reject(err);
-          })
-      });
-
-    },
-    // pushUserDataInList() {
-    //    this.userList.push({
-    //       addedDate: this.addedDate,
-    //       deviceName: this.deviceName,
-    //       deviceSerial: this.deviceSerial,
-    //       organization : this.organization
+    // getDevPosTest (pos) {
+    //   return new Promise(function (resolve, reject) {
+    //     axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
+    //       if (res.status == 200) {
+    //         resolve(res.data.position);
+    //       }
     //     })
+    //       .catch((err) => {
+    //         reject(err);
+    //       })
+    //   });
+
     // },
 
     getDeviceData () {
-      axios.get(`${ipObj.ip}/deviceData`,
+
+      axios.get(`${ipObj.ip}/device`,
         {
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
           }
         }).then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
+            //기존 정보 지우는 코드
+            console.log(this.count++, res.data);
             // this.devs = res.data;
             // this.markDev();
           }
