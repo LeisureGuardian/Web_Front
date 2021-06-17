@@ -82,29 +82,22 @@ export default {
     };
   },
   created () {
-    // let timerId = setInterval(() => this.getDeviceData(), 5000); 
+    setInterval(() => this.getDeviceData(), 5000);
     // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000); // 필요시 참고 
   },
   methods: {
-    async send () { // async await 으로 비동기 처리
-      for (var i = 0; i < 10; i++) {
-        var res = await this.getDevPosTest(i);
-        console.log(res);
-      }
-    },
-
     getDeviceData () {
-
-      axios.get(`${ipObj.ip}/device`,
+      axios.get(`${ipObj.ip}/device`, // GET /deviceData 가 비어있어서 일단은 /device로 test 
         {
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
           }
         }).then((res) => {
           if (res.status == 200) {
-            this.rmDev();
+            this.rmDev(); //초기화 함수 
             console.log(this.count++, res.data);
-            // this.devs = res.data;
+            // 서버랑 통신 되면 데이터 구조 확인해서 실행 
+            // this.devs = res.data; 
             // this.markDev();
           }
         })

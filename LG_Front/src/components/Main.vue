@@ -50,7 +50,7 @@ export default {
     rmDev () {
       this.markers.map((marker) => {
         marker.onRemove();
-      });//다 지우고 
+      });
       this.markers = [];
     },
     addDev (devs) {
