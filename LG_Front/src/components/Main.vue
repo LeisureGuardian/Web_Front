@@ -47,12 +47,11 @@ export default {
 
   },
   methods: {
-    rmDev (userList) {
+    rmDev () {
       this.markers.map((marker) => {
         marker.onRemove();
       });//다 지우고 
       this.markers = [];
-      this.addDev(userList);//새로 초기화
     },
     addDev (devs) {
       devs.forEach((dev, i) => {

@@ -1,7 +1,8 @@
 <template>
   <div class="userContainer">
     <p id="user">User</p>
-    <v-btn class="primary mb-1" @click="markDev">reflash</v-btn>
+    <v-btn class="primary mb-2" @click="markDev">refresh</v-btn>
+    <v-btn class="error mb-2 ml-2" @click="rmDev">remove</v-btn>
     <div id="addLoc">
       <template>
         <v-card>
@@ -81,10 +82,8 @@ export default {
     };
   },
   created () {
-    // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-
-    // let timerId = setInterval(() => this.getDeviceData(), 2000);
-    // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000);
+    // let timerId = setInterval(() => this.getDeviceData(), 5000); 
+    // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000); // 필요시 참고 
   },
   methods: {
     async send () { // async await 으로 비동기 처리
@@ -93,21 +92,6 @@ export default {
         console.log(res);
       }
     },
-
-    // Test Code 
-    // getDevPosTest (pos) {
-    //   return new Promise(function (resolve, reject) {
-    //     axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
-    //       if (res.status == 200) {
-    //         resolve(res.data.position);
-    //       }
-    //     })
-    //       .catch((err) => {
-    //         reject(err);
-    //       })
-    //   });
-
-    // },
 
     getDeviceData () {
 
@@ -118,7 +102,7 @@ export default {
           }
         }).then((res) => {
           if (res.status == 200) {
-            //기존 정보 지우는 코드
+            this.rmDev();
             console.log(this.count++, res.data);
             // this.devs = res.data;
             // this.markDev();
@@ -132,9 +116,10 @@ export default {
     markDev () {
       this.$emit("addDev", this.devs);
     },
-    rmDev (index) {
-      this.userList.splice(index, 1);
-      this.$emit("rmDev", this.userList);
+
+    rmDev () {
+      this.devs = []
+      this.$emit("rmDev");
     }
   }
 };
