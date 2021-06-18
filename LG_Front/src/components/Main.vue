@@ -6,7 +6,7 @@
       class="item"
       :center="{ lat: 36.14557919088093,
           lng: 128.39311591970852}"
-      :zoom="8"
+      :zoom="5"
       style="width: 50%; height: 700px;  "
     >
       <GmapMarker
@@ -14,7 +14,7 @@
         v-for="(m, index) in markers"
         :position="m.position"
         :clickable="true"
-        :draggable="true"
+        :icon="'undefined'"
       />
     </GmapMap>
   </v-container>
@@ -43,12 +43,11 @@ export default {
   created () {
   },
   methods: {
-    rmDev (userList) {
+    rmDev () {
       this.markers.map((marker) => {
         marker.onRemove();
-      });//다 지우고 
+      });
       this.markers = [];
-      this.addDev(userList);//새로 초기화
     },
     addDev (devs) {
       devs.forEach((dev, i) => {
@@ -71,6 +70,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .container {
   display: flex;
@@ -124,4 +124,4 @@ export default {
     }
   }
 }
-</style> 
+</style>

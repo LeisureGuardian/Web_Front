@@ -15,7 +15,6 @@ export default {
   name: 'App',
 
   created () {
-    this.$router.push({ name: 'Home' })
     if (sessionStorage.getItem("isLogin") === "true") {
       this.$router.push({ name: 'Home' })
     } else {

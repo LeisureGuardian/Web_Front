@@ -54,12 +54,11 @@ export default {
             password: this.Password
           }).then((res) => {
             if (res.status == 200) {
-              if(!res.data.error) {
-              console.log(res.data);
-              this.token = res.data.access_token;
-              sessionStorage.setItem("token", this.token);
-              sessionStorage.setItem("isLogin", true);
-              this.$router.push("/"); // 메인페이지로 이동
+              if (!res.data.error) {
+                this.token = res.data.access_token;
+                sessionStorage.setItem("token", this.token);
+                sessionStorage.setItem("isLogin", true);
+                this.$router.push("/"); // 메인페이지로 이동
               }
               else {
                 alert("비밀번호가 다르거나 등록되지 않은 이메일입니다.")
@@ -75,7 +74,6 @@ export default {
             }
             console.log(err)
           })
-
       }
       //입력이 아예 없는 경우
       if (!this.Password || !this.email) {

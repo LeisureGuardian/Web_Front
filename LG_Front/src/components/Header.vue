@@ -29,7 +29,11 @@ export default {
     logout () {
       sessionStorage.setItem("isLogin", false);
       sessionStorage.setItem("token", "");
+      this.intervalClear()
       this.$router.push("/login");
+    },
+    intervalClear() {
+      this.$store.commit('clearinter')
     },
     time () {
       const today = new Date();

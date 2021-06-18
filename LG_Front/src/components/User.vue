@@ -1,7 +1,8 @@
 <template>
   <div class="userContainer">
     <p id="user">User</p>
-    <v-btn class="primary mb-1" @click="markDev">reflash</v-btn>
+    <v-btn class="primary mb-2" @click="markDev">refresh</v-btn>
+    <v-btn class="error mb-2 ml-2" @click="rmDev">remove</v-btn>
     <div id="addLoc">
       <template>
         <v-card>
@@ -80,102 +81,122 @@ export default {
       lat: 35,
       lng: 123,
       search: "",
-      check:1,
-      // addedDate: null,
-      // deviceName: null,
-      // deviceSerial: null,
-      // organization: null,
-      // indexCount: null,
+//<<<<<<< HEAD
+  //     check:1,
+  //     // addedDate: null,
+  //     // deviceName: null,
+  //     // deviceSerial: null,
+  //     // organization: null,
+  //     // indexCount: null,
+  //   };
+  // },
+  // created () {
+
+  //   // this.getDevice()
+  //   this.getDeviceData()
+
+
+
+  //   // this.getDevice();
+
+
+
+  //   // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
+  //   // this.getDeviceData()
+  // },
+  // methods: {
+  //   async send () { // async await 으로 비동기 처리
+  //     for (var i = 0; i < 10; i++) {
+  //       var res = await this.getDevPosTest(i);
+  //       console.log(res);
+  //     }
+  //   },
+
+  //   // Test Code 
+  //   getDevPosTest (pos) {
+  //     return new Promise(function (resolve, reject) {
+  //       axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
+  //         if (res.status == 200) {
+  //           resolve(res.data.position);
+  //         }
+  //       })
+  //         .catch((err) => {
+  //           reject(err);
+  //         })
+  //     });
+
+  //   },
+  //   getDevice () {
+  //     axios.get(`${ipObj.ip}/device`,
+  //     {
+  //       headers: {
+  //         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+  //       }
+  //     }).then((res) => {
+  //       if (res.status == 200) {
+  //         console.log(res.data);
+  //         // this.userList = res.data.data;
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //       alert("데이터 불러오기 중 오류");
+  //     })
+  //   },
+  //   // pushUserDataInList() {
+  //   //    this.userList.push({
+  //   //       addedDate: this.addedDate,
+  //   //       deviceName: this.deviceName,
+  //   //       deviceSerial: this.deviceSerial,
+  //   //       organization : this.organization
+  //   //     })
+  //   // },
+
+  //   getDeviceData () {
+  //     axios.get(`${ipObj.ip}/deviceData`,
+  //     // {
+  //     //   headers: {
+  //     //     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+  //     //   }
+  //     // }).then((res) => {
+  //     //   if (res.status == 200) {
+  //     //     this.userList = res.data.data;
+  //     //     console.log("확인 : " + res.data.data);
+  //     //     console.log("통신완료" + this.check);
+  //     //     this.check++;
+  //     //     // console.log("this.userList : " + res.data.data);
+  //     //   }
+  //     // })
+  //     // .catch((err) => {
+  //     //   console.log(err)
+  //     // })
+//=======
+      addedDate: null,
+      deviceName: null,
+      deviceSerial: null,
+      organization: null,
+      indexCount: null,
+      count: 1
     };
   },
   created () {
-
-    // this.getDevice()
-    this.getDeviceData()
-
-
-
-    // this.getDevice();
-
-
-
-    // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-    // this.getDeviceData()
+    this.$store.state.inter = setInterval(() => this.getDeviceData(), 5000);
+    // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000); // 필요시 참고 
   },
+
   methods: {
-    async send () { // async await 으로 비동기 처리
-      for (var i = 0; i < 10; i++) {
-        var res = await this.getDevPosTest(i);
-        console.log(res);
-      }
-    },
-
-    // Test Code 
-    getDevPosTest (pos) {
-      return new Promise(function (resolve, reject) {
-        axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
-          if (res.status == 200) {
-            resolve(res.data.position);
-          }
-        })
-          .catch((err) => {
-            reject(err);
-          })
-      });
-
-    },
-    getDevice () {
-      axios.get(`${ipObj.ip}/device`,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          console.log(res.data);
-          // this.userList = res.data.data;
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        alert("데이터 불러오기 중 오류");
-      })
-    },
-    // pushUserDataInList() {
-    //    this.userList.push({
-    //       addedDate: this.addedDate,
-    //       deviceName: this.deviceName,
-    //       deviceSerial: this.deviceSerial,
-    //       organization : this.organization
-    //     })
-    // },
-
     getDeviceData () {
-      axios.get(`${ipObj.ip}/deviceData`,
-      // {
-      //   headers: {
-      //     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      //   }
-      // }).then((res) => {
-      //   if (res.status == 200) {
-      //     this.userList = res.data.data;
-      //     console.log("확인 : " + res.data.data);
-      //     console.log("통신완료" + this.check);
-      //     this.check++;
-      //     // console.log("this.userList : " + res.data.data);
-      //   }
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
+      axios.get(`${ipObj.ip}/device`, // GET /deviceData 가 비어있어서 일단은 /device로 test 
         {
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
           }
         }).then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
-            // this.devs = res.data;
+            this.rmDev(); //초기화 함수 
+            console.log(this.count++, res.data);
+            // 서버랑 통신 되면 데이터 구조 확인해서 실행 
+            // this.devs = res.data; 
             // this.markDev();
           }
         })
@@ -183,13 +204,13 @@ export default {
           console.log(err)
         })
     },
-
     markDev () {
       this.$emit("addDev", this.devs);
     },
-    rmDev (index) {
-      this.userList.splice(index, 1);
-      this.$emit("rmDev", this.userList);
+
+    rmDev () {
+      this.devs = []
+      this.$emit("rmDev");
     }
   }
 };

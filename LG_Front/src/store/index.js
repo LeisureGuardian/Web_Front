@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin: false,
+    inter: null,
   },
   // computed
   getters: {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
         state.isLogin = false
       }
     },
+    clearinter(state) {
+      clearInterval(state.inter)
+    }
 
   },
   actions: {

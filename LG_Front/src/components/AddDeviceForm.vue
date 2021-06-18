@@ -36,10 +36,8 @@
         </v-col>
       </v-row> -->
 
-      <v-row class="mt-5">
-        <v-col cols="8" sm="4" md="3" xl="2" class="center">
-          <v-btn color="primary" type="submit">Input</v-btn>
-        </v-col>
+      <v-row class="mt-5 center">
+        <v-btn color="primary" type="submit">Input</v-btn>
       </v-row>
     </v-form>
   </div>
@@ -49,6 +47,7 @@
 <script>
 import axios from "axios";
 import ipObj from "../key.js"
+
 export default {
   data () {
     return {
@@ -59,6 +58,9 @@ export default {
     }
   },
   methods: {
+    intervalClear() {
+      this.$store.commit('clearinter')
+    },
     inputDevice (e) {
       if (this.SerialNumber == null || this.DeviceName == null) {
         this.error = "Please input all of the form.";
@@ -81,11 +83,14 @@ export default {
         }).catch((err) => {
           if(err.response.status == 400)
           alert("중복된 기기 등록입니다.");
-
         })
         e.preventDefault();
       }
     }
+  },
+
+  created() {
+    this.intervalClear();
   }
 }
 </script>
