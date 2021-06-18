@@ -1,7 +1,7 @@
 <template>
   <div class="SignUpForm">
     <p class="Error">{{error}}</p>
-    <v-form @submit="CheckForm" novalidate="true">
+    <v-form @submit.prevent="CheckForm" novalidate="true">
       <v-row class="center">
         <v-col cols="10" sm="6" md="5" xl="3">
           <input placeholder="name" type="text" v-model="name" name="name" class="NameInput" />
@@ -136,12 +136,13 @@ export default {
             /* 회원가입이 성공적으로 끝나면 바로 로그인 되도록 */
             sessionStorage.setItem("token", this.token);
             sessionStorage.setItem("isLogin", true);
+            this.$router.push("/"); // 메인페이지로 이동
           }
         }).catch((err) => {
           if (err.response.status === 422) {
             this.error = "이메일 형식을 맞춰주세요.";
           }
-          else if(err.response.status == 400) {
+          if(err.response.status == 400) {
             alert("이미 존재하는 계정입니다.")
           }
         })
