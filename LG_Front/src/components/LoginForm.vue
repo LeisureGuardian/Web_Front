@@ -32,7 +32,6 @@
 
 <script>
 
-import { mapMutations } from "vuex";
 import axios from "axios"
 import ipObj from "../key.js"
 export default {
@@ -81,7 +80,6 @@ export default {
       }
       e.preventDefault();
     },
-    ...mapMutations(["setLogin"]),
   },
 };
 </script>
