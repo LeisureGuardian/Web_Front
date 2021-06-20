@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div id="title"><router-link to ="/" class = "homeLink">Leisure Guardian</router-link></div>
+    <div id="title"><a class = "homeLink" @click="move">Leisure Guardian</a></div>
     <div id="time">{{now}}</div>
     <div v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')" class = "buttonWrapper">
       <v-btn class="primary mt-5 mr-5 addDev" @click="addDevice">addDevice</v-btn>
@@ -19,13 +19,20 @@ export default {
   data () {
     return {
       now: null,
-
     };
   },
   created () {
     setInterval(() => { this.time() }, 1000);
   },
   methods: {
+    move() {
+      if(sessionStorage.getItem("isLogin") == "false") {
+        this.$router.push("/login");
+      }
+      else if(sessionStorage.getItem("isLogin") == "true") {
+        this.$router.push("/");
+      }
+    },
     logout () {
       sessionStorage.setItem("isLogin", false);
       sessionStorage.setItem("token", "");
