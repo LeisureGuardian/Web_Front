@@ -1,12 +1,9 @@
 <template>
   <div class="userContainer">
-    <p id="user">User</p>
-    <v-btn class="primary mb-2" @click="markDev">refresh</v-btn>
-    <v-btn class="error mb-2 ml-2" @click="rmDev">remove</v-btn>
     <div id="addLoc">
       <template>
         <v-card>
-          <v-card-title>
+          <v-card-title class = 'vCardTitle'>
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -39,6 +36,9 @@ export default {
           text:"heartRate", align:"center", value: "heartRate"
         },
         {
+          text:"accelMax", align:"center", value:"accelMax"
+        },
+        {
           text:"batteryLevel", align:"center", value: "batteryLevel"
         },
         {
@@ -48,145 +48,29 @@ export default {
           text:"button", align:"center", value:"button"
         },
       ],
-      devs: [
-        //Dummy devs
-        {
-          devName: 1,
-          lat: "35",
-          lng: "125"
-        },
-        {
-          devName: 2,
-          lat: "32",
-          lng: "124"
-        },
-        {
-          devName: 3,
-          lat: "34",
-          lng: "123"
-        },
-        {
-          devName: 4,
-          lat: "36",
-          lng: "125"
-        },
-        {
-          devName: 5,
-          lat: "35",
-          lng: "126"
-        },
-      ],
-      userList: [],
-      nextDevId: 1,
+      devs: [],
       lat: 35,
       lng: 123,
       search: "",
-//<<<<<<< HEAD
-  //     check:1,
-  //     // addedDate: null,
-  //     // deviceName: null,
-  //     // deviceSerial: null,
-  //     // organization: null,
-  //     // indexCount: null,
-  //   };
-  // },
-  // created () {
-
-  //   // this.getDevice()
-  //   this.getDeviceData()
-
-
-
-  //   // this.getDevice();
-
-
-
-  //   // this.send(); // 서버로 부터 반복문을 통해 실시간 장치 정보를 받기 위한 테스트 함수
-  //   // this.getDeviceData()
-  // },
-  // methods: {
-  //   async send () { // async await 으로 비동기 처리
-  //     for (var i = 0; i < 10; i++) {
-  //       var res = await this.getDevPosTest(i);
-  //       console.log(res);
-  //     }
-  //   },
-
-  //   // Test Code 
-  //   getDevPosTest (pos) {
-  //     return new Promise(function (resolve, reject) {
-  //       axios.get(`${ipObj.ip}/getDevData/${pos}`).then((res) => {
-  //         if (res.status == 200) {
-  //           resolve(res.data.position);
-  //         }
-  //       })
-  //         .catch((err) => {
-  //           reject(err);
-  //         })
-  //     });
-
-  //   },
-  //   getDevice () {
-  //     axios.get(`${ipObj.ip}/device`,
-  //     {
-  //       headers: {
-  //         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-  //       }
-  //     }).then((res) => {
-  //       if (res.status == 200) {
-  //         console.log(res.data);
-  //         // this.userList = res.data.data;
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //       alert("데이터 불러오기 중 오류");
-  //     })
-  //   },
-  //   // pushUserDataInList() {
-  //   //    this.userList.push({
-  //   //       addedDate: this.addedDate,
-  //   //       deviceName: this.deviceName,
-  //   //       deviceSerial: this.deviceSerial,
-  //   //       organization : this.organization
-  //   //     })
-  //   // },
-
-  //   getDeviceData () {
-  //     axios.get(`${ipObj.ip}/deviceData`,
-  //     // {
-  //     //   headers: {
-  //     //     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-  //     //   }
-  //     // }).then((res) => {
-  //     //   if (res.status == 200) {
-  //     //     this.userList = res.data.data;
-  //     //     console.log("확인 : " + res.data.data);
-  //     //     console.log("통신완료" + this.check);
-  //     //     this.check++;
-  //     //     // console.log("this.userList : " + res.data.data);
-  //     //   }
-  //     // })
-  //     // .catch((err) => {
-  //     //   console.log(err)
-  //     // })
-//=======
-      addedDate: null,
-      deviceName: null,
-      deviceSerial: null,
-      organization: null,
-      indexCount: null,
+      ob_devicename: null,
+      ob_temp: null,
+      ob_heartRate: null,
+      ob_batteryLevel: null,
+      ob_accelMax: null,
+      ob_critical: null,
+      ob_button: null,
+      ob_lat: null,
+      ob_lng: null,
       count: 1
     };
   },
   created () {
     this.$store.state.inter = setInterval(() => this.getDeviceData(), 5000);
-    // setTimeout(() => { clearInterval(timerId); console.log("clearInterval") }, 10000); // 필요시 참고 
   },
 
   methods: {
     getDeviceData () {
-      axios.get(`${ipObj.ip}/device`, // GET /deviceData 가 비어있어서 일단은 /device로 test 
+      axios.get(`${ipObj.ip}/deviceData`,
         {
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -194,10 +78,39 @@ export default {
         }).then((res) => {
           if (res.status == 200) {
             this.rmDev(); //초기화 함수 
-            console.log(this.count++, res.data);
-            // 서버랑 통신 되면 데이터 구조 확인해서 실행 
-            // this.devs = res.data; 
-            // this.markDev();
+            // this.devs = res.data.data;
+            console.log(res.data.data);
+            for(let i = 0; i<res.data.data.length; i++) {
+              if(res.data.data[i].button == 0) {
+                this.ob_button = "정상"
+              }
+              else if(res.data.data[i].button == 1) {
+                this.ob_button = "위험"
+              }
+              this.ob_devicename = res.data.data[i].deviceName;
+              this.ob_temp = res.data.data[i].temp
+              this.ob_heartRate = res.data.data[i].heartRate;
+              this.ob_batteryLevel = res.data.data[i].batteryLevel;
+              this.ob_accelMax = res.data.data[i].accelMax;
+              this.ob_lat = res.data.data[i].latitude;
+              this.ob_lng = res.data.data[i].longitude;
+
+              if(res.data.data[i].critical == 0) {
+                this.ob_critical = "정상"
+              }
+              if(res.data.data[i].critical == 1) {
+                this.ob_critical = "꺼짐"
+              }
+              if(res.data.data[i].critical == 2) {
+                this.ob_critical = "위험"
+              }
+              if(res.data.data[i].critical == 3) {
+                this.ob_critical = "연결끊김"
+              }
+              this.devs.push({deviceName: this.ob_devicename, temp: this.ob_temp, accelMax:this.ob_accelMax, heartRate: this.ob_heartRate, batteryLevel: this.ob_batteryLevel, critical: this.ob_critical, button: this.ob_button,
+              latitude: this.ob_lat, longitude:this.ob_lng})
+            }
+            this.markDev();
           }
         })
         .catch((err) => {
@@ -251,5 +164,11 @@ b {
 #addLoc {
   display: flex;
   justify-content: center;
+}
+.vCardTitle {
+  position:relative;
+  padding-top:0;
+  padding-right:2%;
+  padding-left:2%;
 }
 </style>

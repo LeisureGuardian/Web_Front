@@ -1,10 +1,10 @@
 <template>
-  <v-container>
-    <User class="item" @addDev="addDev" @rmDev="rmDev" />
+  <v-container class = "wrapper">
+    <User class="item" @addDev="addDev" @rmDev="rmDev" /> 
     <GmapMap
       ref="mapRef"
       class="item"
-      :center="{ lat: 36.14557919088093,
+      :center="{ lat: 36.145579190,
           lng: 128.39311591970852}"
       :zoom="5"
       style="width: 50%; height: 700px;  "
@@ -14,6 +14,7 @@
         v-for="(m, index) in markers"
         :position="m.position"
         :clickable="true"
+        :draggable="true"
         :icon="'undefined'"
       />
     </GmapMap>
@@ -51,12 +52,31 @@ export default {
     },
     addDev (devs) {
       devs.forEach((dev, i) => {
-        console.log(dev.devName);
         const el = document.createElement("div");
-        el.textContent = dev.devName;
+        el.textContent = dev.deviceName;
         el.setAttribute("data-marker-index", i);
+        if(dev.critical == "꺼짐") {
+          el.style.background = "#c8c8c8";
+          el.style.color = "black";
+        }
+        /* 위험 */
+        else if(dev.critical == "위험" || dev.button == "위험") {
+          el.style.background="red";
+          el.style.color="white";
+          el.style.fontWeight="bold"
+        }
+        /* 연결 끊김 */
+        else if(dev.critical == "연결끊김") {
+          el.style.background="yellow";
+          el.style.color="red";
+          el.style.fontWeight="bold";
+        }
+        else {
+          el.style.background="white";
+          el.style.color="black";
+        }
         const t = new CustomMarker(
-          new this.google.maps.LatLng(dev.lat, dev.lng), el
+          new this.google.maps.LatLng(dev.latitude, dev.longitude), el
         );
         this.$refs["mapRef"].$mapPromise.then((map) => {
           t.setMap(map);
@@ -74,10 +94,22 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  justify-content: space-between;
+  padding:0;
+}
+.wrapper:not(.container) {
+  position:relative;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  width:100%;
+  height:100;
+  margin:0;
+  padding:10px;
 }
 .item {
   width: 50%;
+  padding:0;
+  margin:0;
 }
 </style>
 

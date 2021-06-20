@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <div id="title">Leisure Guardian</div>
+    <div id="title"><router-link to ="/" class = "homeLink">Leisure Guardian</router-link></div>
     <div id="time">{{now}}</div>
-    <div v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')">
-      <v-btn class="primary mt-5 mr-5" @click="addDevice">addDevice</v-btn>
+    <div v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')" class = "buttonWrapper">
+      <v-btn class="primary mt-5 mr-5 addDev" @click="addDevice">addDevice</v-btn>
       <v-btn
         v-if="($route.name !== 'Login')&&($route.name !== 'SignUp')"
-        class="error mt-5"
+        class="error mt-5 logOut"
         @click="logout"
       >LogOut</v-btn>
     </div>
@@ -59,8 +59,15 @@ export default {
   align-items: center;
   text-align: center;
 }
+.buttonWrapper {
+  transform: translate(40vw,-16vh)
+}
 #title {
   font-size: 50px;
+}
+.homeLink {
+  color:black;
+  text-decoration: none;
 }
 #time {
   font-size: 30px;
