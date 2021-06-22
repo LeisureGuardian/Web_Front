@@ -24,18 +24,6 @@
           />
         </v-col>
       </v-row>
-      <!-- <v-row class="mt-5 center">
-        <v-col cols="10" sm="6" md="5" xl="3">
-          <input
-            placeholder="Organization"
-            type="text"
-            class="organizationInput"
-            v-model="Organization"
-            name="organization"
-          />
-        </v-col>
-      </v-row> -->
-
       <v-row class="mt-5 center">
         <v-btn color="primary" type="submit">Input</v-btn>
       </v-row>
@@ -52,9 +40,8 @@ export default {
   data () {
     return {
       error: null,
-      SerialNumber: null,
-      DeviceName: null,
-      // Organization: null
+      SerialNumber: "",
+      DeviceName: "",
     }
   },
   methods: {
@@ -62,8 +49,8 @@ export default {
       this.$store.commit('clearinter')
     },
     inputDevice (e) {
-      if (this.SerialNumber == null || this.DeviceName == null) {
-        this.error = "Please input all of the form.";
+      if (this.SerialNumber == "" || this.DeviceName == "") {
+        this.error = "아래의 모든 폼을 입력해주세요.";
         e.preventDefault();
       }
       else {

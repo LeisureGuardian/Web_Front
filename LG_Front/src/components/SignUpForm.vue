@@ -105,22 +105,23 @@ export default {
   data () {
     return {
       error: null,
-      name: null,
-      email: null,
-      Password: null,
-      PasswordConfirm: null,
-      token: null,
-      Organization: null
+      name: "",
+      email: "",
+      Password: "",
+      PasswordConfirm: "",
+      token: "",
+      Organization: ""
     }
   },
   methods: {
     CheckForm (e) {
       if (this.Password !== this.PasswordConfirm) {
-        this.error = "Please check your password again.";
+        this.error = "패스워드가 일치하지 않습니다.";
         e.preventDefault();
       }
-      else if (this.name == null || this.email == null || this.Password == null || this.PasswordConfirm == null) {
-        this.error = "Please input all of the form.";
+      else if (this.name == "" || this.email == "" || this.Password == ""|| this.PasswordConfirm == ""
+      || this.Organization == "") {
+        this.error = "아래의 정보를 모두 기입해주세요.";
         e.preventDefault();
       }
       else {

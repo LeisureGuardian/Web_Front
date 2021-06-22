@@ -61,9 +61,9 @@ export default {
         }
         /* 위험 */
         else if(dev.critical == "위험" || dev.button == "위험") {
-          el.style.background="red";
-          el.style.color="white";
-          el.style.fontWeight="bold"
+          el.style.background = "red";
+          el.style.color = "white";
+          el.style.fontWeight = "bold";
         }
         /* 연결 끊김 */
         else if(dev.critical == "연결끊김") {

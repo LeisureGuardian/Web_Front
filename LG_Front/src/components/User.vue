@@ -49,8 +49,6 @@ export default {
         },
       ],
       devs: [],
-      lat: 35,
-      lng: 123,
       search: "",
       ob_devicename: null,
       ob_temp: null,
@@ -61,7 +59,7 @@ export default {
       ob_button: null,
       ob_lat: null,
       ob_lng: null,
-      count: 1
+      // count: 1
     };
   },
   created () {
@@ -78,8 +76,6 @@ export default {
         }).then((res) => {
           if (res.status == 200) {
             this.rmDev(); //초기화 함수 
-            // this.devs = res.data.data;
-            console.log(res.data.data);
             for(let i = 0; i<res.data.data.length; i++) {
               if(res.data.data[i].button == 0) {
                 this.ob_button = "정상"
@@ -107,8 +103,9 @@ export default {
               if(res.data.data[i].critical == 3) {
                 this.ob_critical = "연결끊김"
               }
-              this.devs.push({deviceName: this.ob_devicename, temp: this.ob_temp, accelMax:this.ob_accelMax, heartRate: this.ob_heartRate, batteryLevel: this.ob_batteryLevel, critical: this.ob_critical, button: this.ob_button,
-              latitude: this.ob_lat, longitude:this.ob_lng})
+              this.devs.push({deviceName: this.ob_devicename, temp: this.ob_temp, accelMax:this.ob_accelMax, 
+              heartRate: this.ob_heartRate, batteryLevel: this.ob_batteryLevel, critical: this.ob_critical, 
+              button: this.ob_button, latitude: this.ob_lat, longitude:this.ob_lng})
             }
             this.markDev();
           }

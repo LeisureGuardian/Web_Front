@@ -39,8 +39,8 @@ export default {
   data () {
     return {
       error: null,
-      email: null,
-      Password: null,
+      email: "",
+      Password: "",
       token: null
     };
   },
@@ -53,33 +53,27 @@ export default {
             password: this.Password
           }).then((res) => {
             if (res.status == 200) {
-              if (!res.data.error) {
-                this.token = res.data.access_token;
-                sessionStorage.setItem("token", this.token);
-                sessionStorage.setItem("isLogin", true);
-                this.$router.push("/"); // 메인페이지로 이동
-              }
-              else {
-                alert("비밀번호가 다르거나 등록되지 않은 이메일입니다.")
-              }
+              this.token = res.data.access_token;
+              sessionStorage.setItem("token", this.token);
+              sessionStorage.setItem("isLogin", true);
+              this.$router.push("/"); // 메인페이지로 이동
             }
           })
           .catch((err) => {
             if (err.response.status === 422) {
-              this.error = err.response.data.detail[0].msg;
+              this.error = "이메일 형식을 맞춰주세요."
             }
             else if(err.response.status === 400) {
-              alert("비밀번호가 다릅니다.");
+              alert("가입되지 않은 계정이거나 비밀번호가 다릅니다.");
             }
-            console.log(err)
           })
       }
       //입력이 아예 없는 경우
-      if (!this.Password || !this.email) {
-        this.error = "아이디 및 비밀번호 입력을 확인해주세요";
+      if (this.Password == "" || this.email == "") {
+        this.error = "아래의 모든 폼을 입력해주세요.";
       }
       e.preventDefault();
-    },
+    }
   },
 };
 </script>

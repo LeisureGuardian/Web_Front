@@ -9,7 +9,6 @@
 </template>
 
 <script>
-// import Main from './components/Main';
 import Header from './components/Header'
 export default {
   name: 'App',
@@ -29,12 +28,10 @@ export default {
   methods: {
   },
   components: {
-    // Main,
     Header
   },
 
   data: () => ({
-    //
   }),
 
 };
